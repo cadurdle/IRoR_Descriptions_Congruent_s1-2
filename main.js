@@ -10,7 +10,7 @@ const experiment = {
 };
 
 window.onload = function () {
-    typo = new Typo("en_US", undefined, undefined, { dictionaryPath: "/IRoR_Descriptions/typo/dictionaries", asyncLoad: false });
+    typo = new Typo("en_US", undefined, undefined, { dictionaryPath: "/IRoR_Descriptions_Congruent_s1-2/typo/dictionaries", asyncLoad: false });
     fetchStudyData()
         .then(imageSets => preloadImages(imageSets))
         .then(() => {
@@ -23,7 +23,7 @@ window.onload = function () {
 };
 
 function fetchStudyData() {
-    return fetch('/IRoR_Descriptions/study.json')
+    return fetch('/IRoR_Descriptions_Congruent_s1-2/study.json')
         .then(response => {
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
@@ -31,7 +31,7 @@ function fetchStudyData() {
             return response.json();
         })
         .then(data => {
-            experiment.blocks = data.blocks || 6; // Set the number of blocks from the study data
+            experiment.blocks = data.blocks || 2; // Set the number of blocks from the study data
             experiment.imagesPerBlock = data.imagesPerBlock || 54; // Set the number of images per block from the study data
             return data.imageSets;
         })
@@ -46,7 +46,7 @@ function preloadImages(imageSets) {
         if (set.condition === 'congruent_resources') { // Only include congruent_resources
             set.images.sort(); // Sort images alphabetically
             set.images.forEach(image => {
-                let path = `/IRoR_Descriptions/images/${set.condition}/${set.setNumber}/${image}`;
+                let path = `/IRoR_Descriptions_Congruent_s1-2/images/${set.condition}/${set.setNumber}/${image}`;
                 let word = formatWord(image);
                 experiment.imageSets.push({
                     path: path,
@@ -118,29 +118,6 @@ function formatWord(filename) {
 
 let isPaused = false;
 
-function pauseTask() {
-    isPaused = true;
-    console.log('Task paused');
-    document.getElementById('pause_button').style.display = 'none';
-    document.getElementById('resume_button').style.display = 'block';
-    document.getElementById('pause_screen').style.display = 'flex';
-    saveResponsesToFile();
-}
-
-function resumeTask() {
-    isPaused = false;
-    console.log('Task resumed');
-    document.getElementById('resume_button').style.display = 'none';
-    document.getElementById('pause_button').style.display = 'block';
-    document.getElementById('pause_screen').style.display = 'none';
-    showNextImage();
-}
-
-function endTaskEarly() {
-    console.log('Ending task early');
-    endExperiment();
-}
-
 function showInstructions() {
     const instructionsDiv = document.getElementById('instructions');
     instructionsDiv.innerHTML = `
@@ -177,7 +154,6 @@ function showInstructionPages() {
         "In the task, you will see an image, a word in orange font to describe the image, and four text boxes below the image.<br><br>You need to describe each image using four essential details, one detail per text box.<br><br>Details can include many things, some examples to describe the image may be colors, shapes, textures, materials, environments, etc.<br>You can use 1 - 3 words per detail entry.<br><br>Please do not use the word in orange below the image in the details you list.",
         "Keep in mind, that people in our next task will see the same images for 2 seconds at a time and have to recall them. We will be using the key details you provide to measure these next participants' performance.<br><br>Again, please give us 4 details you feel are essential to describe the image.<br><br>Remember, do not use the word in orange.",
         "Please go as quickly as possible.<br><br>There are many images to get through.<br>Please pay close attention to spelling before submitting your detail descriptions.<br><br>There is no back button. You can only move forward through the task.<br>A progress bar is displayed at the bottom of the screen.<br>Please feel free to take breaks as needed.",
-        "In the bottom right corner, you will see a Pause button and a End Task button.<br><br>If you hit pause, then a CSV file will download to your computer with your current progress.<br><br>Keep this web browser open with the task and resume when ready.<br>If you decide not to continue, then please send Courtney (cadurdle@ucsb.edu) your most recent CSV download of the task.<br><br>If you would like to stop participating, then hit End Task.<br><br>A CSV file will download and please email that to Courtney (cadurdle@ucsb.edu).",
         "Please remember to make the web browser full screen.<br><br>Thank you for your time, effort, patience, and attention to detail!<br><br>Please email Courtney Durdle with any questions at cadurdle@ucsb.edu.<br><br>Hit Next to begin."
     ];
     let currentPage = 0;
@@ -195,8 +171,6 @@ function showInstructionPages() {
         } else {
             instructionsDiv.innerHTML = '';
             document.getElementById('experiment').style.display = 'flex';
-            document.getElementById('pause_button').style.display = 'inline-block';
-            document.getElementById('end_button').style.display = 'inline-block';
             startTrials();
         }
     }
@@ -207,17 +181,10 @@ function showInstructionPages() {
 function startTrials() {
     console.log('Starting trials');
     document.getElementById('progress-bar-container').style.display = 'flex';
-    document.getElementById('pause_button').style.display = 'block';
-    document.getElementById('end_button').style.display = 'block';
     showNextImage();
 }
 
 function showNextImage() {
-    if (isPaused) {
-        console.log('Task is paused, not showing next image');
-        return;
-    }
-
     console.log('Showing next image');
     if (experiment.currentBlock >= experiment.blocks) {
         endExperiment();
@@ -399,7 +366,7 @@ function saveResponse(set) {
     console.log('Saving response');
     let details = [];
     let invalidDetails = [];
-    let typo = new Typo('en_US', undefined, undefined, { dictionaryPath: '/IRoR_Descriptions/typo/dictionaries' });
+    let typo = new Typo('en_US', undefined, undefined, { dictionaryPath: '/IRoR_Descriptions_Congruent_s1-2/typo/dictionaries' });
 
     for (let i = 1; i <= 4; i++) {
         let detail = document.getElementById(`detail${i}`).value.trim();
@@ -446,21 +413,6 @@ function saveResponse(set) {
     showNextImage();
 }
 
-document.getElementById('pause_button').onclick = pauseTask;
-document.getElementById('resume_button').onclick = resumeTask;
-document.getElementById('end_button').onclick = endExperiment;
-
-function pauseExperiment() {
-    console.log('Pausing experiment');
-    saveResponsesToFile();
-}
-
-function endExperiment() {
-    console.log('Ending experiment');
-    saveResponsesToFile();
-    showThankYouMessage();
-}
-
 function saveResponsesToFile() {
     console.log('Saving responses to file');
     let csvData = "participantName,image,word,detail1,detail2,detail3,detail4,condition,folder\n"; // Updated headers
@@ -468,20 +420,20 @@ function saveResponsesToFile() {
         csvData += `${response.participantName},${response.image},${response.word},${response.detail1},${response.detail2},${response.detail3},${response.detail4},${response.condition},${response.folder}\n`; // Included participantName
     });
 
-    const filename = `${experiment.participantName}_IRoR_Descriptions_${getFormattedDate()}.csv`;
+    const filename = `${experiment.participantName}_IRoR_Descriptions_Congruent_s1-2_${getFormattedDate()}.csv`;
     saveToFile(filename, csvData);
 }
 
-function downloadCSV() {
-    console.log('Downloading CSV');
-    let data = "participantName,image,word,detail1,detail2,detail3,detail4,condition,folder\n"; // Updated headers
-    experiment.responses.forEach(response => {
-        data += `${response.participantName},${response.image},${response.word},${response.detail1},${response.detail2},${response.detail3},${response.detail4},${response.condition},${response.folder}\n`; // Included participantName
-    });
+//function downloadCSV() {
+  //  console.log('Downloading CSV');
+    //let data = "participantName,image,word,detail1,detail2,detail3,detail4,condition,folder\n"; // Updated headers
+    //experiment.responses.forEach(response => {
+      //  data += `${response.participantName},${response.image},${response.word},${response.detail1},${response.detail2},${response.detail3},${response.detail4},${response.condition},${response.folder}\n`; // Included participantName
+    //});
 
-    const filename = `${experiment.participantName}_IRoR_Descriptions_${getFormattedDate()}.csv`;
-    saveToFile(filename, data);
-}
+    //const filename = `${experiment.participantName}_IRoR_Descriptions_${getFormattedDate()}.csv`;
+    //saveToFile(filename, data);
+//}
 
 function saveToFile(filename, data) {
     let blob = new Blob([data], { type: 'text/csv' });
