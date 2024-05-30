@@ -122,9 +122,9 @@ function showInstructions() {
     const instructionsDiv = document.getElementById('instructions');
     instructionsDiv.innerHTML = `
         <div class="instructions-content">
-            <p>Welcome to the Experiment!<br>Please enter your name and press Start.</p>
-            <label for="participantName">Name:</label>
-            <input type="text" id="participantName" name="participantName" autocomplete="name" style="width: 300px; height: 30px; margin-top: 10px; margin-bottom: 20px;">
+            <p>Welcome to the Experiment!<br>Please enter your Prolific ID and press Start.</p>
+            <label for="participantName">Prolific ID:</label>
+            <input type="text" id="participantName" name="participantName" autocomplete="off" style="width: 300px; height: 30px; margin-top: 10px; margin-bottom: 20px;" pattern="[a-zA-Z0-9_-]+">
             <button class="next-button" id="startButton">Start</button>
         </div>
     `;
@@ -136,12 +136,13 @@ function showInstructions() {
 
     const startButton = document.getElementById('startButton');
     startButton.onclick = () => {
-        const nameInput = document.getElementById('participantName').value;
-        if (nameInput.trim() === '') {
-            alert('Please enter your name to start the experiment.');
+        const idInput = document.getElementById('participantName').value;
+        const idPattern = /^[a-zA-Z0-9_-]+$/;
+        if (idInput.trim() === '' || !idPattern.test(idInput)) {
+            alert('Please enter a valid Prolific ID to start the experiment.');
             return;
         }
-        experiment.participantName = nameInput;
+        experiment.participantName = idInput;
         showInstructionPages();
     };
 }
@@ -383,6 +384,12 @@ function saveResponse(set) {
 
     if (invalidDetails.length > 0) {
         alert(`The following words may have typos or be invalid: ${invalidDetails.join(', ')}. Please check your entries and provide four unique details. Do not use the descriptor word.`);
+        invalidDetails.forEach(word => {
+            // Highlight invalid words (this is a simple example, you might want a more sophisticated approach)
+            document.querySelectorAll(`input[value*='${word}']`).forEach(input => {
+                input.style.borderColor = 'red';
+            });
+        });
         return;
     }
 
@@ -412,6 +419,7 @@ function saveResponse(set) {
     }
     showNextImage();
 }
+
 
 function saveResponsesToFile() {
     console.log('Saving responses to file');
