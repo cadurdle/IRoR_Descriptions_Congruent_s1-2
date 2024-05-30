@@ -1,7 +1,7 @@
 const experiment = {
-    blocks: 6,
+    blocks: 2,
     imagesPerBlock: 54,
-    congruentSets: 6,
+    congruentSets: 2,
     incongruentSets: 0,
     imageSets: [],
     currentBlock: 0,
