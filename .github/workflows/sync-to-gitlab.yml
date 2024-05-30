@@ -3,11 +3,12 @@ name: Sync to GitLab
 on:
   push:
     branches:
-      - main  # Change this to your default branch if different
+      - main  # Adjust this if you use a different default branch
 
 jobs:
   sync:
     runs-on: ubuntu-latest
+
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
@@ -21,7 +22,5 @@ jobs:
       env:
         GITLAB_TOKEN: ${{ secrets.GITLAB_TOKEN }}
       run: |
-         git remote add gitlab https://oauth2:${GITLAB_TOKEN}@gitlab.com/cadurdle/IRoR_Descriptions_Congruent_s1-2.git
+        git remote add gitlab https://oauth2:${GITLAB_TOKEN}@gitlab.com/cadurdle/IRoR_Descriptions_Congruent_s1-2.git
         git push -u gitlab --all
-
-
