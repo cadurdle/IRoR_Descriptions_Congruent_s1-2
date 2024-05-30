@@ -1,3 +1,4 @@
+//TESTING SYNC
 const experiment = {
     blocks: 2,
     imagesPerBlock: 54,
