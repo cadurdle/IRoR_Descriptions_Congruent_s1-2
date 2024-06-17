@@ -13,15 +13,19 @@ const experiment = {
 window.onload = function () {
     typo = new Typo("en_US", undefined, undefined, { dictionaryPath: "/IRoR_Descriptions_Congruent_s1-2/typo/dictionaries", asyncLoad: false });
     fetchStudyData()
-        .then(imageSets => preloadImages(imageSets))
+        .then(imageSets => {
+            console.log('Study data fetched:', imageSets); // Added logging here
+            return preloadImages(imageSets);
+        })
         .then(() => {
             console.log('Images preloaded');
             showInstructions();
         })
         .catch(error => {
-            console.error('Error preloading images:', error);
+            console.error('Error during initialization:', error); // Changed logging message here
         });
 };
+
 
 function fetchStudyData() {
     return fetch('/IRoR_Descriptions_Congruent_s1-2/study.json')
@@ -32,8 +36,9 @@ function fetchStudyData() {
             return response.json();
         })
         .then(data => {
-            experiment.blocks = data.blocks || 2; // Set the number of blocks from the study data
-            experiment.imagesPerBlock = data.imagesPerBlock || 54; // Set the number of images per block from the study data
+            experiment.blocks = data.blocks || 2;
+            experiment.imagesPerBlock = data.imagesPerBlock || 54;
+            console.log('Fetched study data:', data);
             return data.imageSets;
         })
         .catch(error => {
@@ -43,9 +48,14 @@ function fetchStudyData() {
 }
 
 function preloadImages(imageSets) {
+    if (!Array.isArray(imageSets)) {
+        console.error('Image sets data is not an array:', imageSets);
+        return Promise.reject('Image sets data is not an array');
+    }
+
     imageSets.forEach(set => {
-        if (set.condition === 'congruent_resources') { // Only include congruent_resources
-            set.images.sort(); // Sort images alphabetically
+        if (set.condition === 'congruent_resources') {
+            set.images.sort();
             set.images.forEach(image => {
                 let path = `/IRoR_Descriptions_Congruent_s1-2/images/${set.condition}/${set.setNumber}/${image}`;
                 let word = formatWord(image);
@@ -58,11 +68,14 @@ function preloadImages(imageSets) {
             });
         }
     });
+
+    console.log('Preloaded image sets:', experiment.imageSets);
     return Promise.resolve();
 }
-
+   
 // Initialize lab.js and Pavlovia plugin
-const { lab, Pavlovia } = window;
+const { lab } = window;
+const Pavlovia = window.Pavlovia;
 
 // Create the main experiment sequence
 const experimentSequence = new lab.flow.Sequence({
