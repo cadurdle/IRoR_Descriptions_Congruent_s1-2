@@ -1,4 +1,3 @@
-// main.js
 const experiment = {
     blocks: 2,
     imagesPerBlock: 54,
@@ -72,62 +71,12 @@ function preloadImages(imageSets) {
     return Promise.resolve();
 }
 
-// Initialize lab.js and Pavlovia plugin
-const { lab } = window;
-
-// Create the main experiment sequence
-const experimentSequence = new lab.flow.Sequence({
-    content: [
-        // Add your experiment content here
-    ],
-    plugins: [new Pavlovia()]
-});
-
-// Run the experiment
-experimentSequence.run();
-
-function fetchImages(condition, setNumber) {
-    console.log(`Fetching images from /images/${condition}/${setNumber}`);
-    return fetch(`/images/${condition}/${setNumber}`)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            return response.json();
-        })
-        .then(images => {
-            console.log(`Fetched images for ${condition} ${setNumber}:`, images);
-            return images;
-        })
-        .catch(error => {
-            console.error('Error fetching images:', error);
-            return [];
-        });
-}
-
-function loadImagesFromPath(condition, set) {
-    return fetchImages(condition, set).then(images => {
-        images.forEach(image => {
-            let word = formatWord(image);
-            experiment.imageSets.push({
-                path: `/images/${condition}/${set}/${image}`,
-                word: word,
-                condition: condition,
-                folder: set
-            });
-        });
-        console.log(`Loaded images from ${condition}_resources/${set}`);
-    });
-}
-
 function formatWord(filename) {
     let name = filename.split('.jpg')[0];
     name = name.replace(/[0-9]/g, '');
     name = name.replace(/_/g, ' ');
     return name.toUpperCase();
 }
-
-let isPaused = false;
 
 function showInstructions() {
     const instructionsDiv = document.getElementById('instructions');
@@ -217,26 +166,26 @@ function showNextImage() {
 
 function createInputFields(number, set) {
     const experimentDiv = document.getElementById('experiment');
-    experimentDiv.innerHTML = '';
+    experimentDiv.innerHTML = ''; 
     experimentDiv.style.display = 'flex';
     experimentDiv.style.flexDirection = 'column';
     experimentDiv.style.justifyContent = 'center';
     experimentDiv.style.alignItems = 'center';
-    experimentDiv.style.height = '90vh';
+    experimentDiv.style.height = '90vh'; 
 
     let topDiv = document.createElement('div');
     topDiv.style.display = 'flex';
     topDiv.style.flexDirection = 'column';
     topDiv.style.alignItems = 'center';
     topDiv.style.justifyContent = 'center';
-    topDiv.style.flex = '0 0 auto';
+    topDiv.style.flex = '0 0 auto'; 
 
     let img = document.createElement('img');
     img.src = set.path;
     img.alt = set.word;
     img.style.display = 'block';
-    img.style.maxHeight = '375px';
-    img.style.maxWidth = '100%';
+    img.style.maxHeight = '375px'; 
+    img.style.maxWidth = '100%';   
     img.onerror = () => console.error(`Failed to load image at ${img.src}`);
 
     let wordElement = document.createElement('div');
@@ -248,6 +197,7 @@ function createInputFields(number, set) {
 
     topDiv.appendChild(img);
     topDiv.appendChild(wordElement);
+
     experimentDiv.appendChild(topDiv);
 
     let bottomDiv = document.createElement('div');
@@ -262,7 +212,7 @@ function createInputFields(number, set) {
         container.style.display = 'flex';
         container.style.justifyContent = 'center';
         container.style.alignItems = 'center';
-        container.style.marginBottom = '15px';
+        container.style.marginBottom = '15px'; 
 
         let label = document.createElement('label');
         label.innerText = `Detail ${i + 1}`;
@@ -276,8 +226,8 @@ function createInputFields(number, set) {
         input.name = `detail${i + 1}`;
         input.autocomplete = `off`;
         input.style.flex = '1';
-        input.style.width = '300px';
-        input.style.height = '20px';
+        input.style.width = '300px'; 
+        input.style.height = '20px'; 
 
         container.appendChild(label);
         container.appendChild(input);
@@ -292,29 +242,29 @@ function createButton(text, onClick) {
     let button = document.createElement('button');
     button.innerText = text;
     button.onclick = onClick;
-    button.className = 'submit-button';
+    button.className = 'submit-button'; 
     document.getElementById('experiment').appendChild(button);
 }
 
 function displayImage(path, word) {
     console.log(`Displaying image: ${path}`);
     const experimentDiv = document.getElementById('experiment');
-    experimentDiv.innerHTML = '';
+    experimentDiv.innerHTML = ''; 
 
     let topDiv = document.createElement('div');
     topDiv.style.display = 'flex';
     topDiv.style.flexDirection = 'column';
     topDiv.style.alignItems = 'center';
     topDiv.style.justifyContent = 'center';
-    topDiv.style.flex = '0 0 auto';
+    topDiv.style.flex = '0 0 auto'; 
 
     let img = document.createElement('img');
     img.src = path;
     img.alt = word;
     img.style.display = 'block';
     img.style.margin = '0 auto';
-    img.style.maxHeight = '300px';
-    img.style.maxWidth = '100%';
+    img.style.maxHeight = '300px'; 
+    img.style.maxWidth = '100%';   
     img.onerror = () => console.error(`Failed to load image at ${path}`);
 
     let wordElement = document.createElement('div');
@@ -326,6 +276,7 @@ function displayImage(path, word) {
 
     topDiv.appendChild(img);
     topDiv.appendChild(wordElement);
+
     experimentDiv.appendChild(topDiv);
     createInputFields(4, { path: path, word: word });
 }
@@ -350,6 +301,7 @@ function validateDetails(details, word) {
                 invalidDetails.push(word);
             }
         }
+
         detailSet.add(detailText);
     }
 
