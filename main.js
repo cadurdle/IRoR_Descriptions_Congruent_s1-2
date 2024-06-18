@@ -11,7 +11,7 @@ const experiment = {
 };
 
 window.onload = function () {
-    typo = new Typo("en_US", undefined, undefined, { dictionaryPath: "/IRoR_Descriptions_Congruent_s1-2/typo/dictionaries", asyncLoad: false });
+    typo = new Typo("en_US", undefined, undefined, { dictionaryPath: "typo/dictionaries", asyncLoad: false });
     fetchStudyData()
         .then(imageSets => {
             console.log('Study data fetched:', imageSets); // Added logging here
@@ -28,7 +28,7 @@ window.onload = function () {
 
 
 function fetchStudyData() {
-    return fetch('/IRoR_Descriptions_Congruent_s1-2/study.json')
+    return fetch('/study.json')
         .then(response => {
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
@@ -57,7 +57,7 @@ function preloadImages(imageSets) {
         if (set.condition === 'congruent_resources') {
             set.images.sort();
             set.images.forEach(image => {
-                let path = `/IRoR_Descriptions_Congruent_s1-2/images/${set.condition}/${set.setNumber}/${image}`;
+                let path = `/images/${set.condition}/${set.setNumber}/${image}`;
                 let word = formatWord(image);
                 experiment.imageSets.push({
                     path: path,
