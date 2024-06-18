@@ -1,4 +1,4 @@
-//TESTING SYNC A third time
+// main.js
 const experiment = {
     blocks: 2,
     imagesPerBlock: 54,
@@ -14,7 +14,7 @@ window.onload = function () {
     typo = new Typo("en_US", undefined, undefined, { dictionaryPath: "typo/dictionaries", asyncLoad: false });
     fetchStudyData()
         .then(imageSets => {
-            console.log('Study data fetched:', imageSets); // Added logging here
+            console.log('Study data fetched:', imageSets);
             return preloadImages(imageSets);
         })
         .then(() => {
@@ -22,10 +22,9 @@ window.onload = function () {
             showInstructions();
         })
         .catch(error => {
-            console.error('Error during initialization:', error); // Changed logging message here
+            console.error('Error during initialization:', error);
         });
 };
-
 
 function fetchStudyData() {
     return fetch('/study.json')
@@ -72,7 +71,7 @@ function preloadImages(imageSets) {
     console.log('Preloaded image sets:', experiment.imageSets);
     return Promise.resolve();
 }
-   
+
 // Initialize lab.js and Pavlovia plugin
 const { lab } = window;
 
@@ -86,7 +85,6 @@ const experimentSequence = new lab.flow.Sequence({
 
 // Run the experiment
 experimentSequence.run();
-
 
 function fetchImages(condition, setNumber) {
     console.log(`Fetching images from /images/${condition}/${setNumber}`);
@@ -145,7 +143,7 @@ function showInstructions() {
     instructionsDiv.style.flexDirection = 'column';
     instructionsDiv.style.justifyContent = 'center';
     instructionsDiv.style.alignItems = 'center';
-    instructionsDiv.style.height = '100vh'; // Ensure instructions div takes full height
+    instructionsDiv.style.height = '100vh';
 
     const startButton = document.getElementById('startButton');
     startButton.onclick = () => {
@@ -214,32 +212,31 @@ function showNextImage() {
     console.log(`Displaying image from path: ${set.path}`);
     displayImage(set.path, set.word);
     createInputFields(4, set);
-    updateProgressBar();  // Update the progress bar
+    updateProgressBar();
 }
 
 function createInputFields(number, set) {
     const experimentDiv = document.getElementById('experiment');
-    experimentDiv.innerHTML = ''; // Clear previous content
+    experimentDiv.innerHTML = '';
     experimentDiv.style.display = 'flex';
     experimentDiv.style.flexDirection = 'column';
     experimentDiv.style.justifyContent = 'center';
     experimentDiv.style.alignItems = 'center';
-    experimentDiv.style.height = '90vh'; // Adjust height to make room for progress bar
+    experimentDiv.style.height = '90vh';
 
-    // Ensure image and word are displayed in the top half
     let topDiv = document.createElement('div');
     topDiv.style.display = 'flex';
     topDiv.style.flexDirection = 'column';
     topDiv.style.alignItems = 'center';
     topDiv.style.justifyContent = 'center';
-    topDiv.style.flex = '0 0 auto'; // Adjust size
+    topDiv.style.flex = '0 0 auto';
 
     let img = document.createElement('img');
     img.src = set.path;
     img.alt = set.word;
     img.style.display = 'block';
-    img.style.maxHeight = '375px'; // Adjust the size as needed
-    img.style.maxWidth = '100%';   // Adjust the size as needed
+    img.style.maxHeight = '375px';
+    img.style.maxWidth = '100%';
     img.onerror = () => console.error(`Failed to load image at ${img.src}`);
 
     let wordElement = document.createElement('div');
@@ -251,7 +248,6 @@ function createInputFields(number, set) {
 
     topDiv.appendChild(img);
     topDiv.appendChild(wordElement);
-
     experimentDiv.appendChild(topDiv);
 
     let bottomDiv = document.createElement('div');
@@ -259,14 +255,14 @@ function createInputFields(number, set) {
     bottomDiv.style.flexDirection = 'column';
     bottomDiv.style.alignItems = 'center';
     bottomDiv.style.justifyContent = 'center';
-    bottomDiv.style.flex = '1'; // Adjust size
+    bottomDiv.style.flex = '1';
 
     for (let i = 0; i < number; i++) {
         let container = document.createElement('div');
         container.style.display = 'flex';
         container.style.justifyContent = 'center';
         container.style.alignItems = 'center';
-        container.style.marginBottom = '15px'; // Increased space between input containers
+        container.style.marginBottom = '15px';
 
         let label = document.createElement('label');
         label.innerText = `Detail ${i + 1}`;
@@ -280,8 +276,8 @@ function createInputFields(number, set) {
         input.name = `detail${i + 1}`;
         input.autocomplete = `off`;
         input.style.flex = '1';
-        input.style.width = '300px'; // Adjusted width
-        input.style.height = '20px'; // Adjusted height
+        input.style.width = '300px';
+        input.style.height = '20px';
 
         container.appendChild(label);
         container.appendChild(input);
@@ -296,29 +292,29 @@ function createButton(text, onClick) {
     let button = document.createElement('button');
     button.innerText = text;
     button.onclick = onClick;
-    button.className = 'submit-button'; // Apply CSS class for styling
+    button.className = 'submit-button';
     document.getElementById('experiment').appendChild(button);
 }
 
 function displayImage(path, word) {
     console.log(`Displaying image: ${path}`);
     const experimentDiv = document.getElementById('experiment');
-    experimentDiv.innerHTML = ''; // Clear previous content
+    experimentDiv.innerHTML = '';
 
     let topDiv = document.createElement('div');
     topDiv.style.display = 'flex';
     topDiv.style.flexDirection = 'column';
     topDiv.style.alignItems = 'center';
     topDiv.style.justifyContent = 'center';
-    topDiv.style.flex = '0 0 auto'; // Adjust size
+    topDiv.style.flex = '0 0 auto';
 
     let img = document.createElement('img');
     img.src = path;
     img.alt = word;
     img.style.display = 'block';
     img.style.margin = '0 auto';
-    img.style.maxHeight = '300px'; // Adjust the size as needed
-    img.style.maxWidth = '100%';   // Adjust the size as needed
+    img.style.maxHeight = '300px';
+    img.style.maxWidth = '100%';
     img.onerror = () => console.error(`Failed to load image at ${path}`);
 
     let wordElement = document.createElement('div');
@@ -330,7 +326,6 @@ function displayImage(path, word) {
 
     topDiv.appendChild(img);
     topDiv.appendChild(wordElement);
-
     experimentDiv.appendChild(topDiv);
     createInputFields(4, { path: path, word: word });
 }
@@ -345,29 +340,21 @@ function validateDetails(details, word) {
 
     for (let detail of details) {
         let detailText = detail.trim().toUpperCase();
-        // Check if the detail is empty or is the same as the descriptor word
         if (!detailText || detailText === descriptorWord) return false;
-        // Check for duplicates
         if (detailSet.has(detailText)) return false;
-
-        // Check if the detail contains the descriptor word
         if (detailText.includes(descriptorWord)) return false;
 
-        // Validate each word in the detail
         let words = detailText.split(' ');
         for (let word of words) {
             if (!typo.check(word)) {
                 invalidDetails.push(word);
             }
         }
-
         detailSet.add(detailText);
     }
 
-    // Ensure all details are unique
     if (detailSet.size !== details.length) return false;
 
-    // Check if there are any invalid details
     if (invalidDetails.length > 0) {
         alert(`The following words may have typos or be invalid: ${invalidDetails.join(', ')}. Please check your entries.`);
         return false;
@@ -386,7 +373,6 @@ function saveResponse(set) {
         let detail = document.getElementById(`detail${i}`).value.trim();
         details.push(detail);
 
-        // Validate each word in the detail
         let words = detail.split(' ');
         for (let word of words) {
             if (!typo.check(word)) {
@@ -398,7 +384,6 @@ function saveResponse(set) {
     if (invalidDetails.length > 0) {
         alert(`The following words may have typos or be invalid: ${invalidDetails.join(', ')}. Please check your entries and provide four unique details. Do not use the descriptor word.`);
         invalidDetails.forEach(word => {
-            // Highlight invalid words (this is a simple example, you might want a more sophisticated approach)
             document.querySelectorAll(`input[value*='${word}']`).forEach(input => {
                 input.style.borderColor = 'red';
             });
@@ -423,7 +408,7 @@ function saveResponse(set) {
         folder: set.folder
     };
 
-    experiment.responses.push(responseData); // Store response data
+    experiment.responses.push(responseData);
 
     experiment.currentImage++;
     if (experiment.currentImage >= experiment.imagesPerBlock) {
@@ -433,28 +418,16 @@ function saveResponse(set) {
     showNextImage();
 }
 
-
 function saveResponsesToFile() {
     console.log('Saving responses to file');
-    let csvData = "participantName,image,word,detail1,detail2,detail3,detail4,condition,folder\n"; // Updated headers
+    let csvData = "participantName,image,word,detail1,detail2,detail3,detail4,condition,folder\n";
     experiment.responses.forEach(response => {
-        csvData += `${response.participantName},${response.image},${response.word},${response.detail1},${response.detail2},${response.detail3},${response.detail4},${response.condition},${response.folder}\n`; // Included participantName
+        csvData += `${response.participantName},${response.image},${response.word},${response.detail1},${response.detail2},${response.detail3},${response.detail4},${response.condition},${response.folder}\n`;
     });
 
     const filename = `${experiment.participantName}_IRoR_Descriptions_Congruent_s1-2_${getFormattedDate()}.csv`;
     saveToFile(filename, csvData);
 }
-
-//function downloadCSV() {
-  //  console.log('Downloading CSV');
-    //let data = "participantName,image,word,detail1,detail2,detail3,detail4,condition,folder\n"; // Updated headers
-    //experiment.responses.forEach(response => {
-      //  data += `${response.participantName},${response.image},${response.word},${response.detail1},${response.detail2},${response.detail3},${response.detail4},${response.condition},${response.folder}\n`; // Included participantName
-    //});
-
-    //const filename = `${experiment.participantName}_IRoR_Descriptions_${getFormattedDate()}.csv`;
-    //saveToFile(filename, data);
-//}
 
 function saveToFile(filename, data) {
     let blob = new Blob([data], { type: 'text/csv' });
