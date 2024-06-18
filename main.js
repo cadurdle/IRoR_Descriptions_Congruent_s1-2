@@ -75,7 +75,6 @@ function preloadImages(imageSets) {
    
 // Initialize lab.js and Pavlovia plugin
 const { lab } = window;
-const Pavlovia = window.Pavlovia;
 
 // Create the main experiment sequence
 const experimentSequence = new lab.flow.Sequence({
