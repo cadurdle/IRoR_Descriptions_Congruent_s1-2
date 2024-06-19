@@ -55,20 +55,22 @@ window.lab = (function () {
 })();
 
 // Example usage (if needed):
-const intro = new lab.flow.Screen({
-    title: 'Introduction',
-    content: '<h1>Welcome to the experiment!</h1>',
-    duration: 2000
-});
+document.addEventListener("DOMContentLoaded", () => {
+    const intro = new lab.flow.Screen({
+        title: 'Introduction',
+        content: '<h1>Welcome to the experiment!</h1>',
+        duration: 2000
+    });
 
-const instructions = new lab.flow.Screen({
-    title: 'Instructions',
-    content: '<p>Here are your instructions...</p>',
-    duration: 3000
-});
+    const instructions = new lab.flow.Screen({
+        title: 'Instructions',
+        content: '<p>Here are your instructions...</p>',
+        duration: 3000
+    });
 
-const sequence = new lab.flow.Sequence({
-    content: [intro, instructions]
-});
+    const sequence = new lab.flow.Sequence({
+        content: [intro, instructions]
+    });
 
-sequence.run();
+    sequence.run();
+});
