@@ -1,11 +1,9 @@
-// main.js
 import { PsychoJS } from './libs/psychojs-2023.2.3.js';
 import * as core from './libs/core/index.js';
 import * as util from './libs/util/index.js';
 import * as visual from './libs/visual/index.js';
-import * as sound from './libs/sound/index.js';
 
-// Create the PsychoJS experiment instance
+// Initialize PsychoJS
 const psychoJS = new PsychoJS({
     debug: true
 });
@@ -22,8 +20,9 @@ psychoJS.schedule(psychoJS.gui.DlgFromDict({
     title: 'IRoR Image Description Task Congruent Studysets 1-2'
 }));
 
-psychoJS.schedule( () => {
+psychoJS.schedule(() => {
     // Experiment setup goes here
+    showInstructions();
 });
 
 // Start the experiment
@@ -44,7 +43,7 @@ const experiment = {
 };
 
 window.onload = function () {
-    typo = new Typo("en_US", undefined, undefined, { dictionaryPath: "typo/dictionaries", asyncLoad: false });
+    const typo = new Typo("en_US", undefined, undefined, { dictionaryPath: "typo/dictionaries", asyncLoad: false });
     fetchStudyData()
         .then(imageSets => {
             console.log('Study data fetched:', imageSets);
