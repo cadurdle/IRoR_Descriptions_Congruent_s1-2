@@ -1,5 +1,5 @@
 // main.js
-import { PsychoJS } from './libs/core/index.js';
+import { PsychoJS } from './libs/psychojs-2023.2.3.js';
 import * as core from './libs/core/index.js';
 import * as util from './libs/util/index.js';
 import * as visual from './libs/visual/index.js';
