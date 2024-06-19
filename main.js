@@ -1,9 +1,9 @@
 // main.js
-import { PsychoJS } from './libs/psychojs-2023.2.3.js';
-import * as core from './libs/core.js';
-import * as util from './libs/util.js';
-import * as visual from './libs/visual.js';
-import * as sound from './libs/sound.js';
+import { PsychoJS } from '/libs/psychojs-2023.2.3.js';
+import * as core from '/libs/core.js';
+import * as util from '/libs/util.js';
+import * as visual from '/libs/visual.js';
+import * as sound from '/libs/sound.js';
 
 // Create the PsychoJS experiment instance
 const psychoJS = new PsychoJS({
