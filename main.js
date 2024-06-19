@@ -1,30 +1,35 @@
-// Initialize PsychoJS
-const psychoJS = new PsychoJS({
-    debug: true
-});
+// Check if PsychoJS is loaded
+if (typeof PsychoJS === 'undefined') {
+    console.error('PsychoJS is not defined. Ensure that the PsychoJS libraries are included correctly.');
+} else {
+    // Initialize PsychoJS
+    const psychoJS = new PsychoJS({
+        debug: true
+    });
 
-// Open the Pavlovia session
-psychoJS.start({
-    expName: 'IRoR Image Description Task Congruent Studysets 1-2',
-    expInfo: { participant: '', session: '001' }
-});
+    // Open the Pavlovia session
+    psychoJS.start({
+        expName: 'IRoR Image Description Task Congruent Studysets 1-2',
+        expInfo: { participant: '', session: '001' }
+    });
 
-// Schedule the experiment
-psychoJS.schedule(psychoJS.gui.DlgFromDict({
-    dictionary: { participant: '', session: '001' },
-    title: 'IRoR Image Description Task Congruent Studysets 1-2'
-}));
+    // Schedule the experiment
+    psychoJS.schedule(psychoJS.gui.DlgFromDict({
+        dictionary: { participant: '', session: '001' },
+        title: 'IRoR Image Description Task Congruent Studysets 1-2'
+    }));
 
-psychoJS.schedule(() => {
-    // Experiment setup goes here
-    window.onload();
-});
+    psychoJS.schedule(() => {
+        // Experiment setup goes here
+        window.onload();
+    });
 
-// Start the experiment
-psychoJS.start({
-    expName: 'IRoR Image Description Task Congruent Studysets 1-2',
-    expInfo: { participant: '', session: '001' }
-});
+    // Start the experiment
+    psychoJS.start({
+        expName: 'IRoR Image Description Task Congruent Studysets 1-2',
+        expInfo: { participant: '', session: '001' }
+    });
+}
 
 const experiment = {
     blocks: 2,
