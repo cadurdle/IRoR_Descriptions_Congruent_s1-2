@@ -1,43 +1,42 @@
 // main.js
 import { PsychoJS } from './libs/psychojs-2023.2.3.js';
-import * as core from './libs/core/index.js';
-import * as util from './libs/util/index.js';
-import * as visual from './libs/visual/index.js';
-import * as sound from './libs/sound/index.js';
-import Typo from './typo/typo.js';
+import * as core from './libs/core/Core.js';
+import * as util from './libs/util/Util.js';
+import * as visual from './libs/visual/VisualStim.js';
 
-// Create the PsychoJS experiment instance
-const psychoJS = new PsychoJS({
-    debug: true
-});
+window.onload = function () {
+    console.log('Page loaded successfully');
 
-// Open the Pavlovia session
-psychoJS.start({
-    expName: 'IRoR Image Description Task Congruent Studysets 1-2',
-    expInfo: { participant: '', session: '001' }
-});
+    const psychoJS = new PsychoJS({
+        debug: true
+    });
 
-// Schedule the experiment
-psychoJS.schedule(psychoJS.gui.DlgFromDict({
-    dictionary: { participant: '', session: '001' },
-    title: 'IRoR Image Description Task Congruent Studysets 1-2'
-}));
+    psychoJS.start({
+        expName: 'IRoR Image Description Task Congruent Studysets 1-2',
+        expInfo: { participant: '', session: '001' }
+    });
 
-// Setup the experiment
-psychoJS.schedule(() => {
-    // Experiment setup goes here
-    return function() {
-        core.Clock();
-        // Additional setup code
-    }
-});
+    psychoJS.schedule(psychoJS.gui.DlgFromDict({
+        dictionary: { participant: '', session: '001' },
+        title: 'IRoR Image Description Task Congruent Studysets 1-2'
+    }));
 
-// Start the experiment
-psychoJS.start({
-    expName: 'IRoR Image Description Task Congruent Studysets 1-2',
-    expInfo: { participant: '', session: '001' }
-});
+    psychoJS.schedule(() => {
+        // Experiment setup goes here
+        console.log('Experiment setup goes here');
+    });
 
+    psychoJS.start({
+        expName: 'IRoR Image Description Task Congruent Studysets 1-2',
+        expInfo: { participant: '', session: '001' }
+    });
+
+    // Show instructions div for testing
+    document.getElementById('instructions').style.display = 'block';
+    document.getElementById('experiment').style.display = 'none';
+};
+
+// Additional experiment functions (simplified and focusing on visual elements)
 const experiment = {
     blocks: 2,
     imagesPerBlock: 54,
@@ -47,22 +46,6 @@ const experiment = {
     currentBlock: 0,
     currentImage: 0,
     responses: []
-};
-
-window.onload = function () {
-    const typo = new Typo("en_US", undefined, undefined, { dictionaryPath: "typo/dictionaries", asyncLoad: false });
-    fetchStudyData()
-        .then(imageSets => {
-            console.log('Study data fetched:', imageSets);
-            return preloadImages(imageSets);
-        })
-        .then(() => {
-            console.log('Images preloaded');
-            showInstructions();
-        })
-        .catch(error => {
-            console.error('Error during initialization:', error);
-        });
 };
 
 function fetchStudyData() {
@@ -359,7 +342,7 @@ function saveResponse(set) {
     console.log('Saving response');
     let details = [];
     let invalidDetails = [];
-    const typo = new Typo('en_US', undefined, undefined, { dictionaryPath: '/IRoR_Descriptions_Congruent_s1-2/typo/dictionaries' });
+    let typo = new Typo('en_US', undefined, undefined, { dictionaryPath: '/IRoR_Descriptions_Congruent_s1-2/typo/dictionaries' });
 
     for (let i = 1; i <= 4; i++) {
         let detail = document.getElementById(`detail${i}`).value.trim();
