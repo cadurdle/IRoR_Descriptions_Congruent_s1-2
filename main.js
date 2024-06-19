@@ -1,8 +1,3 @@
-import { PsychoJS } from './libs/psychojs-2023.2.3.js';
-import * as core from './libs/core/index.js';
-import * as util from './libs/util/index.js';
-import * as visual from './libs/visual/index.js';
-
 // Initialize PsychoJS
 const psychoJS = new PsychoJS({
     debug: true
@@ -22,7 +17,6 @@ psychoJS.schedule(psychoJS.gui.DlgFromDict({
 
 psychoJS.schedule(() => {
     // Experiment setup goes here
-    showInstructions();
 });
 
 // Start the experiment
@@ -43,7 +37,7 @@ const experiment = {
 };
 
 window.onload = function () {
-    const typo = new Typo("en_US", undefined, undefined, { dictionaryPath: "typo/dictionaries", asyncLoad: false });
+    typo = new Typo("en_US", undefined, undefined, { dictionaryPath: "typo/dictionaries", asyncLoad: false });
     fetchStudyData()
         .then(imageSets => {
             console.log('Study data fetched:', imageSets);

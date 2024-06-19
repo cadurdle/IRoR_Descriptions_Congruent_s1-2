@@ -4,36 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>IRoR Image Description Task Congruent Studysets 1-2</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
+    <script src="css/lab.dev.js"></script>
     <link rel="stylesheet" type="text/css" href="css/lab.css">
-    <link rel="stylesheet" href="css/styles.css">
-    <script src="libs/jquery-3.5.1.js"></script>
-    <script type="module">
-        import { PsychoJS } from './libs/core/PsychoJS.js';
-        import * as core from './libs/core/index.js';
-        import * as util from './libs/util/index.js';
-        import * as visual from './libs/visual/index.js';
-        import * as sound from './libs/sound/index.js';
-
-        window.PsychoJS = PsychoJS;
-        window.core = core;
-        window.util = util;
-        window.visual = visual;
-        window.sound = sound;
-    </script>
-    <script src="libs/lab.dev.js" type="module"></script>
-    <script src="typo/typo.js" type="module"></script>
-    <script src="main.js" type="module" defer></script>
+    <script src="https://pavlovia.org/lib/labjs-pavlovia-3.0.0.js"></script>
+    <script src="/IRoR_Descriptions/typo/typo.js"></script>
+    <script src="main.js" defer></script>
 </head>
 <body>
     <div id="container">
-        <!-- Instructions Section -->
         <div id="instructions" class="section instructions-content"></div>
-
-        <!-- Experiment Section -->
         <div id="experiment" class="section experiment-content" style="display:none;"></div>
     </div>
-
-    <!-- Progress Bar -->
     <div id="progress-bar-container" style="display:none;">
         <div id="progress-bar-wrapper">
             <span id="progress-label">Progress:</span>
@@ -42,9 +25,8 @@
             </div>
         </div>
     </div>
-    <!-- Thank You Message -->
-    <div id="thank_you_message" class="section thank-you-content" style="display:none;">
-        <p>Thank you for participating in the experiment!</p>
+    <div id="thank_you_message" class="thank-you-message">
+        Thank you for participating!<br>Please email your downloaded csv file to Courtney Durdle at <a href="mailto:cadurdle@ucsb.edu">cadurdle@ucsb.edu</a>. Thank you!
     </div>
 </body>
 </html>
