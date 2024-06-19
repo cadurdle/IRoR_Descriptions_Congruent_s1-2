@@ -1,3 +1,11 @@
+import { PsychoJS } from './libs/psychojs-2023.2.3.js';
+import * as core from './libs/psychojs-2023.2.3.js';
+import * as util from './libs/psychojs-2023.2.3.js';
+import * as visual from './libs/psychojs-2023.2.3.js';
+import * as sound from './libs/psychojs-2023.2.3.js';
+import * as data from './libs/psychojs-2023.2.3.js';
+import * as hardware from './libs/psychojs-2023.2.3.js';
+
 const experiment = {
     blocks: 2,
     imagesPerBlock: 54,
@@ -71,62 +79,12 @@ function preloadImages(imageSets) {
     return Promise.resolve();
 }
 
-// Initialize lab.js and Pavlovia plugin
-const { lab } = window;
-
-// Create the main experiment sequence
-const experimentSequence = new lab.flow.Sequence({
-    content: [
-        // Add your experiment content here
-    ],
-    plugins: [new Pavlovia()]
-});
-
-// Run the experiment
-experimentSequence.run();
-
-function fetchImages(condition, setNumber) {
-    console.log(`Fetching images from /images/${condition}/${setNumber}`);
-    return fetch(`/images/${condition}/${setNumber}`)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            return response.json();
-        })
-        .then(images => {
-            console.log(`Fetched images for ${condition} ${setNumber}:`, images);
-            return images;
-        })
-        .catch(error => {
-            console.error('Error fetching images:', error);
-            return [];
-        });
-}
-
-function loadImagesFromPath(condition, set) {
-    return fetchImages(condition, set).then(images => {
-        images.forEach(image => {
-            let word = formatWord(image);
-            experiment.imageSets.push({
-                path: `/images/${condition}/${set}/${image}`,
-                word: word,
-                condition: condition,
-                folder: set
-            });
-        });
-        console.log(`Loaded images from ${condition}_resources/${set}`);
-    });
-}
-
 function formatWord(filename) {
     let name = filename.split('.jpg')[0];
     name = name.replace(/[0-9]/g, '');
     name = name.replace(/_/g, ' ');
     return name.toUpperCase();
 }
-
-let isPaused = false;
 
 function showInstructions() {
     const instructionsDiv = document.getElementById('instructions');
