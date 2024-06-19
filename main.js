@@ -1,40 +1,49 @@
-// Check if PsychoJS is loaded
-if (typeof PsychoJS === 'undefined') {
-    console.error('PsychoJS is not defined. Ensure that the PsychoJS libraries are included correctly.');
-} else {
-    // Initialize PsychoJS
-    const psychoJS = new PsychoJS({
-        debug: true
-    });
+// Initialize PsychoJS
+const psychoJS = new PsychoJS({
+    debug: true
+});
 
-    // Open the Pavlovia session
-    psychoJS.start({
-        expName: 'IRoR Image Description Task Congruent Studysets 1-2',
-        expInfo: { participant: '', session: '001' }
-    });
+// Open the Pavlovia session
+psychoJS.start({
+    expName: 'IRoR Image Description Task Congruent Studysets 1-2',
+    expInfo: { participant: '', session: '001' }
+});
 
-    // Schedule the experiment
-    psychoJS.schedule(psychoJS.gui.DlgFromDict({
-        dictionary: { participant: '', session: '001' },
-        title: 'IRoR Image Description Task Congruent Studysets 1-2'
-    }));
+// Schedule the experiment
+psychoJS.schedule(psychoJS.gui.DlgFromDict({
+    dictionary: { participant: '', session: '001' },
+    title: 'IRoR Image Description Task Congruent Studysets 1-2'
+}));
 
-    psychoJS.schedule(() => {
-        // Experiment setup goes here
-        window.onload();
-    });
+psychoJS.schedule(() => {
+    // Experiment setup goes here
+    window.onload();
+});
 
-    // Start the experiment
-    psychoJS.start({
-        expName: 'IRoR Image Description Task Congruent Studysets 1-2',
-        expInfo: { participant: '', session: '001' }
-    });
-}
+// Start the experiment
+psychoJS.start({
+    expName: 'IRoR Image Description Task Congruent Studysets 1-2',
+    expInfo: { participant: '', session: '001' }
+});
+
+const experiment = {
+    blocks: 2,
+    imagesPerBlock: 54,
+    congruentSets: 2,
+    incongruentSets: 0,
+    imageSets: [],
+    currentBlock: 0,
+    currentImage: 0,
+    responses: []
+};
 
 window.onload = function () {
     typo = new Typo("en_US", undefined, undefined, { dictionaryPath: "typo/dictionaries", asyncLoad: false });
     fetchStudyData()
         .then(imageSets => {
+            if (!Array.isArray(imageSets)) {
+                throw new Error('Image sets data is not an array');
+            }
             console.log('Study data fetched:', imageSets);
             return preloadImages(imageSets);
         })
@@ -48,7 +57,7 @@ window.onload = function () {
 };
 
 function fetchStudyData() {
-    return fetch('study.json') // Ensure the path is correct relative to your server setup
+    return fetch('study.json')
         .then(response => {
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
@@ -56,10 +65,8 @@ function fetchStudyData() {
             return response.json();
         })
         .then(data => {
-            experiment.blocks = data.blocks || 2;
-            experiment.imagesPerBlock = data.imagesPerBlock || 54;
             console.log('Fetched study data:', data);
-            return data.imageSets;
+            return data.data.imageSets; // Ensure this matches your data structure
         })
         .catch(error => {
             console.error('Error fetching study data:', error);
@@ -67,24 +74,7 @@ function fetchStudyData() {
         });
 }
 
-const experiment = {
-    blocks: 2,
-    imagesPerBlock: 54,
-    congruentSets: 2,
-    incongruentSets: 0,
-    imageSets: [],
-    currentBlock: 0,
-    currentImage: 0,
-    responses: []
-};
-
-
 function preloadImages(imageSets) {
-    if (!Array.isArray(imageSets)) {
-        console.error('Image sets data is not an array:', imageSets);
-        return Promise.reject('Image sets data is not an array');
-    }
-
     imageSets.forEach(set => {
         if (set.condition === 'congruent_resources') {
             set.images.sort();
@@ -100,7 +90,6 @@ function preloadImages(imageSets) {
             });
         }
     });
-
     console.log('Preloaded image sets:', experiment.imageSets);
     return Promise.resolve();
 }
