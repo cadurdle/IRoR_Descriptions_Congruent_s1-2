@@ -17,6 +17,7 @@ psychoJS.schedule(psychoJS.gui.DlgFromDict({
 
 psychoJS.schedule(() => {
     // Experiment setup goes here
+    window.onload();
 });
 
 // Start the experiment
