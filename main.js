@@ -109,63 +109,71 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function showInstructions() {
         const instructionsDiv = document.getElementById('instructions');
-        instructionsDiv.innerHTML = `
-            <div class="instructions-content">
-                <p>Welcome to the Experiment!<br>Please enter your Prolific ID and press Start.</p>
-                <label for="participantName">Prolific ID:</label>
-                <input type="text" id="participantName" name="participantName" autocomplete="off" style="width: 300px; height: 30px; margin-top: 10px; margin-bottom: 20px;" pattern="[a-zA-Z0-9_-]+">
-                <button class="next-button" id="startButton">Start</button>
-            </div>
-        `;
-        instructionsDiv.style.display = 'flex';
-        instructionsDiv.style.flexDirection = 'column';
-        instructionsDiv.style.justifyContent = 'center';
-        instructionsDiv.style.alignItems = 'center';
-        instructionsDiv.style.height = '100vh';
+        if (instructionsDiv) {
+            instructionsDiv.innerHTML = `
+                <div class="instructions-content">
+                    <p>Welcome to the Experiment!<br>Please enter your Prolific ID and press Start.</p>
+                    <label for="participantName">Prolific ID:</label>
+                    <input type="text" id="participantName" name="participantName" autocomplete="off" style="width: 300px; height: 30px; margin-top: 10px; margin-bottom: 20px;" pattern="[a-zA-Z0-9_-]+">
+                    <button class="next-button" id="startButton">Start</button>
+                </div>
+            `;
+            instructionsDiv.style.display = 'flex';
+            instructionsDiv.style.flexDirection = 'column';
+            instructionsDiv.style.justifyContent = 'center';
+            instructionsDiv.style.alignItems = 'center';
+            instructionsDiv.style.height = '100vh';
 
-        const startButton = document.getElementById('startButton');
-        startButton.onclick = () => {
-            const idInput = document.getElementById('participantName').value;
-            const idPattern = /^[a-zA-Z0-9_-]+$/;
-            if (idInput.trim() === '' || !idPattern.test(idInput)) {
-                alert('Please enter a valid Prolific ID to start the experiment.');
-                return;
-            }
-            experiment.participantName = idInput;
-            showInstructionPages();
-        };
+            const startButton = document.getElementById('startButton');
+            startButton.onclick = () => {
+                const idInput = document.getElementById('participantName').value;
+                const idPattern = /^[a-zA-Z0-9_-]+$/;
+                if (idInput.trim() === '' || !idPattern.test(idInput)) {
+                    alert('Please enter a valid Prolific ID to start the experiment.');
+                    return;
+                }
+                experiment.participantName = idInput;
+                showInstructionPages();
+            };
+        } else {
+            console.error('Instructions div not found.');
+        }
     }
 
     function showInstructionPages() {
         const instructionsDiv = document.getElementById('instructions');
-        let pages = [
-            "Please make sure your internet window is full screen for this task.<br><br>Presentation may be affected by resized windows.<br><br>Please hit next.",
-            "In this computer task, you will see various images.<br><br>We are trying to understand what details people value the most when they remember something.<br><br>However, this is not a memory task.<br>We simply want to know what details of the image stand out to you.",
-            "In the task, you will see an image, a word in orange font to describe the image, and four text boxes below the image.<br><br>You need to describe each image using four essential details, one detail per text box.<br><br>Details can include many things, some examples to describe the image may be colors, shapes, textures, materials, environments, etc.<br>You can use 1 - 3 words per detail entry.<br><br>Please do not use the word in orange below the image in the details you list.",
-            "Keep in mind, that people in our next task will see the same images for 2 seconds at a time and have to recall them. We will be using the key details you provide to measure these next participants' performance.<br><br>Again, please give us 4 details you feel are essential to describe the image.<br><br>Remember, do not use the word in orange.",
-            "Please go as quickly as possible.<br><br>There are many images to get through.<br>Please pay close attention to spelling before submitting your detail descriptions.<br><br>There is no back button. You can only move forward through the task.<br>A progress bar is displayed at the bottom of the screen.<br>Please feel free to take breaks as needed.",
-            "Please remember to make the web browser full screen.<br><br>Thank you for your time, effort, patience, and attention to detail!<br><br>Please email Courtney Durdle with any questions at cadurdle@ucsb.edu.<br><br>Hit Next to begin."
-        ];
-        let currentPage = 0;
+        if (instructionsDiv) {
+            let pages = [
+                "Please make sure your internet window is full screen for this task.<br><br>Presentation may be affected by resized windows.<br><br>Please hit next.",
+                "In this computer task, you will see various images.<br><br>We are trying to understand what details people value the most when they remember something.<br><br>However, this is not a memory task.<br>We simply want to know what details of the image stand out to you.",
+                "In the task, you will see an image, a word in orange font to describe the image, and four text boxes below the image.<br><br>You need to describe each image using four essential details, one detail per text box.<br><br>Details can include many things, some examples to describe the image may be colors, shapes, textures, materials, environments, etc.<br>You can use 1 - 3 words per detail entry.<br><br>Please do not use the word in orange below the image in the details you list.",
+                "Keep in mind, that people in our next task will see the same images for 2 seconds at a time and have to recall them. We will be using the key details you provide to measure these next participants' performance.<br><br>Again, please give us 4 details you feel are essential to describe the image.<br><br>Remember, do not use the word in orange.",
+                "Please go as quickly as possible.<br><br>There are many images to get through.<br>Please pay close attention to spelling before submitting your detail descriptions.<br><br>There is no back button. You can only move forward through the task.<br>A progress bar is displayed at the bottom of the screen.<br>Please feel free to take breaks as needed.",
+                "Please remember to make the web browser full screen.<br><br>Thank you for your time, effort, patience, and attention to detail!<br><br>Please email Courtney Durdle with any questions at cadurdle@ucsb.edu.<br><br>Hit Next to begin."
+            ];
+            let currentPage = 0;
 
-        function showPage(pageIndex) {
-            if (pageIndex < pages.length) {
-                instructionsDiv.innerHTML = `
-                    <div class="instructions-content">
-                        <p>${pages[pageIndex]}</p>
-                        <button class="next-button">Next</button>
-                    </div>
-                `;
-                const nextButton = instructionsDiv.querySelector('.next-button');
-                nextButton.onclick = () => showPage(pageIndex + 1);
-            } else {
-                instructionsDiv.innerHTML = '';
-                document.getElementById('experiment').style.display = 'flex';
-                startTrials();
+            function showPage(pageIndex) {
+                if (pageIndex < pages.length) {
+                    instructionsDiv.innerHTML = `
+                        <div class="instructions-content">
+                            <p>${pages[pageIndex]}</p>
+                            <button class="next-button">Next</button>
+                        </div>
+                    `;
+                    const nextButton = instructionsDiv.querySelector('.next-button');
+                    nextButton.onclick = () => showPage(pageIndex + 1);
+                } else {
+                    instructionsDiv.innerHTML = '';
+                    document.getElementById('experiment').style.display = 'flex';
+                    startTrials();
+                }
             }
-        }
 
-        showPage(currentPage);
+            showPage(currentPage);
+        } else {
+            console.error('Instructions div not found.');
+        }
     }
 
     function startTrials() {
@@ -195,76 +203,80 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function createInputFields(number, set) {
         const experimentDiv = document.getElementById('experiment');
-        experimentDiv.innerHTML = '';
-        experimentDiv.style.display = 'flex';
-        experimentDiv.style.flexDirection = 'column';
-        experimentDiv.style.justifyContent = 'center';
-        experimentDiv.style.alignItems = 'center';
-        experimentDiv.style.height = '90vh';
+        if (experimentDiv) {
+            experimentDiv.innerHTML = '';
+            experimentDiv.style.display = 'flex';
+            experimentDiv.style.flexDirection = 'column';
+            experimentDiv.style.justifyContent = 'center';
+            experimentDiv.style.alignItems = 'center';
+            experimentDiv.style.height = '90vh';
 
-        let topDiv = document.createElement('div');
-        topDiv.style.display = 'flex';
-        topDiv.style.flexDirection = 'column';
-        topDiv.style.alignItems = 'center';
-        topDiv.style.justifyContent = 'center';
-        topDiv.style.flex = '0 0 auto';
+            let topDiv = document.createElement('div');
+            topDiv.style.display = 'flex';
+            topDiv.style.flexDirection = 'column';
+            topDiv.style.alignItems = 'center';
+            topDiv.style.justifyContent = 'center';
+            topDiv.style.flex = '0 0 auto';
 
-        let img = document.createElement('img');
-        img.src = set.path;
-        img.alt = set.word;
-        img.style.display = 'block';
-        img.style.maxHeight = '375px';
-        img.style.maxWidth = '100%';
-        img.onerror = () => console.error(`Failed to load image at ${img.src}`);
+            let img = document.createElement('img');
+            img.src = set.path;
+            img.alt = set.word;
+            img.style.display = 'block';
+            img.style.maxHeight = '375px';
+            img.style.maxWidth = '100%';
+            img.onerror = () => console.error(`Failed to load image at ${img.src}`);
 
-        let wordElement = document.createElement('div');
-        wordElement.innerText = set.word;
-        wordElement.style.color = 'orange';
-        wordElement.style.fontSize = '24px';
-        wordElement.style.marginTop = '15px';
-        wordElement.style.marginBottom = '15px';
+            let wordElement = document.createElement('div');
+            wordElement.innerText = set.word;
+            wordElement.style.color = 'orange';
+            wordElement.style.fontSize = '24px';
+            wordElement.style.marginTop = '15px';
+            wordElement.style.marginBottom = '15px';
 
-        topDiv.appendChild(img);
-        topDiv.appendChild(wordElement);
+            topDiv.appendChild(img);
+            topDiv.appendChild(wordElement);
 
-        experimentDiv.appendChild(topDiv);
+            experimentDiv.appendChild(topDiv);
 
-        let bottomDiv = document.createElement('div');
-        bottomDiv.style.display = 'flex';
-        bottomDiv.style.flexDirection = 'column';
-        bottomDiv.style.alignItems = 'center';
-        bottomDiv.style.justifyContent = 'center';
-        bottomDiv.style.flex = '1';
+            let bottomDiv = document.createElement('div');
+            bottomDiv.style.display = 'flex';
+            bottomDiv.style.flexDirection = 'column';
+            bottomDiv.style.alignItems = 'center';
+            bottomDiv.style.justifyContent = 'center';
+            bottomDiv.style.flex = '1';
 
-        for (let i = 0; i < number; i++) {
-            let container = document.createElement('div');
-            container.style.display = 'flex';
-            container.style.justifyContent = 'center';
-            container.style.alignItems = 'center';
-            container.style.marginBottom = '15px';
+            for (let i = 0; i < number; i++) {
+                let container = document.createElement('div');
+                container.style.display = 'flex';
+                container.style.justifyContent = 'center';
+                container.style.alignItems = 'center';
+                container.style.marginBottom = '15px';
 
-            let label = document.createElement('label');
-            label.innerText = `Detail ${i + 1}`;
-            label.style.color = 'white';
-            label.style.marginRight = '10px';
-            label.setAttribute('for', `detail${i + 1}`);
+                let label = document.createElement('label');
+                label.innerText = `Detail ${i + 1}`;
+                label.style.color = 'white';
+                label.style.marginRight = '10px';
+                label.setAttribute('for', `detail${i + 1}`);
 
-            let input = document.createElement('input');
-            input.type = 'text';
-            input.id = `detail${i + 1}`;
-            input.name = `detail${i + 1}`;
-            input.autocomplete = `off`;
-            input.style.flex = '1';
-            input.style.width = '300px';
-            input.style.height = '20px';
+                let input = document.createElement('input');
+                input.type = 'text';
+                input.id = `detail${i + 1}`;
+                input.name = `detail${i + 1}`;
+                input.autocomplete = `off`;
+                input.style.flex = '1';
+                input.style.width = '300px';
+                input.style.height = '20px';
 
-            container.appendChild(label);
-            container.appendChild(input);
-            bottomDiv.appendChild(container);
+                container.appendChild(label);
+                container.appendChild(input);
+                bottomDiv.appendChild(container);
+            }
+            experimentDiv.appendChild(bottomDiv);
+
+            createButton('Submit', () => saveResponse(set));
+        } else {
+            console.error('Experiment div not found.');
         }
-        experimentDiv.appendChild(bottomDiv);
-
-        createButton('Submit', () => saveResponse(set));
     }
 
     function createButton(text, onClick) {
@@ -272,42 +284,51 @@ document.addEventListener("DOMContentLoaded", () => {
         button.innerText = text;
         button.onclick = onClick;
         button.className = 'submit-button';
-        document.getElementById('experiment').appendChild(button);
+        const experimentDiv = document.getElementById('experiment');
+        if (experimentDiv) {
+            experimentDiv.appendChild(button);
+        } else {
+            console.error('Experiment div not found.');
+        }
     }
 
     function displayImage(path, word) {
         console.log(`Displaying image: ${path}`);
         const experimentDiv = document.getElementById('experiment');
-        experimentDiv.innerHTML = '';
+        if (experimentDiv) {
+            experimentDiv.innerHTML = '';
 
-        let topDiv = document.createElement('div');
-        topDiv.style.display = 'flex';
-        topDiv.style.flexDirection = 'column';
-        topDiv.style.alignItems = 'center';
-        topDiv.style.justifyContent = 'center';
-        topDiv.style.flex = '0 0 auto';
+            let topDiv = document.createElement('div');
+            topDiv.style.display = 'flex';
+            topDiv.style.flexDirection = 'column';
+            topDiv.style.alignItems = 'center';
+            topDiv.style.justifyContent = 'center';
+            topDiv.style.flex = '0 0 auto';
 
-        let img = document.createElement('img');
-        img.src = path;
-        img.alt = word;
-        img.style.display = 'block';
-        img.style.margin = '0 auto';
-        img.style.maxHeight = '300px';
-        img.style.maxWidth = '100%';
-        img.onerror = () => console.error(`Failed to load image at ${path}`);
+            let img = document.createElement('img');
+            img.src = path;
+            img.alt = word;
+            img.style.display = 'block';
+            img.style.margin = '0 auto';
+            img.style.maxHeight = '300px';
+            img.style.maxWidth = '100%';
+            img.onerror = () => console.error(`Failed to load image at ${path}`);
 
-        let wordElement = document.createElement('div');
-        wordElement.innerText = word;
-        wordElement.style.color = 'orange';
-        wordElement.style.fontSize = '24px';
-        wordElement.style.marginTop = '20px';
-        wordElement.style.marginBottom = '20px';
+            let wordElement = document.createElement('div');
+            wordElement.innerText = word;
+            wordElement.style.color = 'orange';
+            wordElement.style.fontSize = '24px';
+            wordElement.style.marginTop = '20px';
+            wordElement.style.marginBottom = '20px';
 
-        topDiv.appendChild(img);
-        topDiv.appendChild(wordElement);
+            topDiv.appendChild(img);
+            topDiv.appendChild(wordElement);
 
-        experimentDiv.appendChild(topDiv);
-        createInputFields(4, { path: path, word: word });
+            experimentDiv.appendChild(topDiv);
+            createInputFields(4, { path: path, word: word });
+        } else {
+            console.error('Experiment div not found.');
+        }
     }
 
     function validateDetails(details, word) {
@@ -420,22 +441,41 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function showThankYouMessage() {
         const thankYouMessageDiv = document.getElementById('thank_you_message');
-        thankYouMessageDiv.style.display = 'flex';
-        document.getElementById('container').style.display = 'none';
-        document.getElementById('progress-bar-container').style.display = 'none';
-        document.querySelector('.control-buttons').style.display = 'none';
+        if (thankYouMessageDiv) {
+            thankYouMessageDiv.style.display = 'flex';
+        }
+        const containerDiv = document.getElementById('container');
+        if (containerDiv) {
+            containerDiv.style.display = 'none';
+        }
+        const progressBarContainer = document.getElementById('progress-bar-container');
+        if (progressBarContainer) {
+            progressBarContainer.style.display = 'none';
+        }
+        const controlButtons = document.querySelector('.control-buttons');
+        if (controlButtons) {
+            controlButtons.style.display = 'none';
+        }
     }
 
     function displayText(text, elementId) {
         const element = document.getElementById(elementId);
-        element.innerText = text;
-        element.style.color = 'white';
+        if (element) {
+            element.innerText = text;
+            element.style.color = 'white';
+        } else {
+            console.error(`Element with id ${elementId} not found.`);
+        }
     }
 
     function updateProgressBar() {
         const progressBarFill = document.getElementById('progress-bar-fill');
-        const progressPercentage = (experiment.currentBlock * experiment.imagesPerBlock + experiment.currentImage) / (experiment.blocks * experiment.imagesPerBlock) * 100;
-        progressBarFill.style.width = `${progressPercentage}%`;
+        if (progressBarFill) {
+            const progressPercentage = (experiment.currentBlock * experiment.imagesPerBlock + experiment.currentImage) / (experiment.blocks * experiment.imagesPerBlock) * 100;
+            progressBarFill.style.width = `${progressPercentage}%`;
+        } else {
+            console.error('Progress bar fill element not found.');
+        }
     }
 
     function getFormattedDate() {
