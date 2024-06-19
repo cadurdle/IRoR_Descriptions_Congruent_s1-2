@@ -1,42 +1,37 @@
 // main.js
 import { PsychoJS } from './libs/psychojs-2023.2.3.js';
-import * as core from './libs/core/Core.js';
-import * as util from './libs/util/Util.js';
-import * as visual from './libs/visual/VisualStim.js';
+import * as core from './libs/core/index.js';
+import * as util from './libs/util/index.js';
+import * as visual from './libs/visual/index.js';
+import * as sound from './libs/sound/index.js';
 
-window.onload = function () {
-    console.log('Page loaded successfully');
+// Create the PsychoJS experiment instance
+const psychoJS = new PsychoJS({
+    debug: true
+});
 
-    const psychoJS = new PsychoJS({
-        debug: true
-    });
+// Open the Pavlovia session
+psychoJS.start({
+    expName: 'IRoR Image Description Task Congruent Studysets 1-2',
+    expInfo: { participant: '', session: '001' }
+});
 
-    psychoJS.start({
-        expName: 'IRoR Image Description Task Congruent Studysets 1-2',
-        expInfo: { participant: '', session: '001' }
-    });
+// Schedule the experiment
+psychoJS.schedule(psychoJS.gui.DlgFromDict({
+    dictionary: { participant: '', session: '001' },
+    title: 'IRoR Image Description Task Congruent Studysets 1-2'
+}));
 
-    psychoJS.schedule(psychoJS.gui.DlgFromDict({
-        dictionary: { participant: '', session: '001' },
-        title: 'IRoR Image Description Task Congruent Studysets 1-2'
-    }));
+psychoJS.schedule( () => {
+    // Experiment setup goes here
+});
 
-    psychoJS.schedule(() => {
-        // Experiment setup goes here
-        console.log('Experiment setup goes here');
-    });
+// Start the experiment
+psychoJS.start({
+    expName: 'IRoR Image Description Task Congruent Studysets 1-2',
+    expInfo: { participant: '', session: '001' }
+});
 
-    psychoJS.start({
-        expName: 'IRoR Image Description Task Congruent Studysets 1-2',
-        expInfo: { participant: '', session: '001' }
-    });
-
-    // Show instructions div for testing
-    document.getElementById('instructions').style.display = 'block';
-    document.getElementById('experiment').style.display = 'none';
-};
-
-// Additional experiment functions (simplified and focusing on visual elements)
 const experiment = {
     blocks: 2,
     imagesPerBlock: 54,
@@ -46,6 +41,22 @@ const experiment = {
     currentBlock: 0,
     currentImage: 0,
     responses: []
+};
+
+window.onload = function () {
+    typo = new Typo("en_US", undefined, undefined, { dictionaryPath: "typo/dictionaries", asyncLoad: false });
+    fetchStudyData()
+        .then(imageSets => {
+            console.log('Study data fetched:', imageSets);
+            return preloadImages(imageSets);
+        })
+        .then(() => {
+            console.log('Images preloaded');
+            showInstructions();
+        })
+        .catch(error => {
+            console.error('Error during initialization:', error);
+        });
 };
 
 function fetchStudyData() {
