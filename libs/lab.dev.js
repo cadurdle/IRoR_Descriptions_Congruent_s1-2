@@ -37,8 +37,12 @@ window.lab = (function () {
         async run() {
             console.log(`Showing screen: ${this.title}`);
             const body = document.body;
-            body.innerHTML = this.content;
-            await new Promise(resolve => setTimeout(resolve, this.duration || 1000));
+            if (body) {
+                body.innerHTML = this.content;
+                await new Promise(resolve => setTimeout(resolve, this.duration || 1000));
+            } else {
+                console.error("Document body is null.");
+            }
         }
     }
 
