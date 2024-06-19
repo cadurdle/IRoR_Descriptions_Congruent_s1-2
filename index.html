@@ -8,17 +8,19 @@
     <link rel="stylesheet" href="css/styles.css">
     <script src="libs/jquery-3.5.1.js"></script>
     <script type="module">
-        import { PsychoJS } from './libs/psychojs-2023.2.3.js';
-        import * as core from './libs/core/Core.js';
-        import * as util from './libs/util/Util.js';
-        import * as visual from './libs/visual/VisualStim.js';
+        import { PsychoJS } from './libs/core/PsychoJS.js';
+        import * as core from './libs/core/index.js';
+        import * as util from './libs/util/index.js';
+        import * as visual from './libs/visual/index.js';
+        import * as sound from './libs/sound/index.js';
 
         window.PsychoJS = PsychoJS;
         window.core = core;
         window.util = util;
         window.visual = visual;
+        window.sound = sound;
     </script>
-   <script src="libs/lab.dev.js" type="module"></script>
+    <script src="libs/lab.dev.js" type="module"></script>
     <script src="typo/typo.js" type="module"></script>
     <script src="main.js" type="module" defer></script>
 </head>
