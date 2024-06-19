@@ -7,24 +7,10 @@
     <link rel="stylesheet" type="text/css" href="css/lab.css">
     <link rel="stylesheet" href="css/styles.css">
     <script src="libs/jquery-3.5.1.js"></script>
+    <script src="libs/psychojs-2023.2.3.js"></script>
     <script src="libs/lab.dev.js"></script>
     <script src="typo/typo.js"></script>
-    <script src="libs/require.js"></script>
-    <script>
-        require.config({
-            baseUrl: 'libs',
-            paths: {
-                'psychojs': 'psychojs-2023.2.3',
-                'core': 'core',
-                'util': 'util',
-                'visual': 'visual',
-                'sound': 'sound',
-                'data': 'data',
-                'hardware': 'hardware'
-            }
-        });
-        require(['../main']);
-    </script>
+    <script src="main.js" defer></script>
 </head>
 <body>
     <div id="container">
