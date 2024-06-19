@@ -10,18 +10,6 @@
     <script src="libs/psychojs-2023.2.3.js"></script>
     <script src="libs/lab.dev.js"></script>
     <script src="typo/typo.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js"></script>
-    <script>
-        require.config({
-            paths: {
-                'lib': 'https://pavlovia.org/lib',
-                'psychojs': 'https://pavlovia.org/lib/psychojs-2020.1.js'
-            }
-        });
-        require(['psychojs'], function(pavlovia) {
-            window.pavlovia = pavlovia;
-        });
-    </script>
     <script src="main.js" defer></script>
 </head>
 <body>
@@ -41,7 +29,9 @@
                 <div id="progress-bar-fill"></div>
             </div>
         </div>
-         <!-- Thank You Message -->
+    </div>
+    
+    <!-- Thank You Message -->
     <div id="thank_you_message" class="section thank-you-content" style="display:none;">
         <p>Thank you for participating in the experiment!</p>
     </div>
