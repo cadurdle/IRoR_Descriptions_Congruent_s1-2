@@ -4,6 +4,7 @@ import * as core from './libs/core/index.js';
 import * as util from './libs/util/index.js';
 import * as visual from './libs/visual/index.js';
 import * as sound from './libs/sound/index.js';
+import Typo from './typo/typo.js';
 
 // Create the PsychoJS experiment instance
 const psychoJS = new PsychoJS({
@@ -22,25 +23,21 @@ psychoJS.schedule(psychoJS.gui.DlgFromDict({
     title: 'IRoR Image Description Task Congruent Studysets 1-2'
 }));
 
-// Experiment setup
+// Setup the experiment
 psychoJS.schedule(() => {
-    return preloadImages(fetchStudyData());
+    // Experiment setup goes here
+    return function() {
+        core.Clock();
+        // Additional setup code
+    }
 });
 
-// Show instructions
-psychoJS.schedule(showInstructions);
-
-// Start trials
-psychoJS.schedule(startTrials);
-
-// Complete the experiment
-psychoJS.schedule(() => {
-    showThankYouMessage();
-    saveResponsesToPavlovia();
-    psychoJS.quit();
+// Start the experiment
+psychoJS.start({
+    expName: 'IRoR Image Description Task Congruent Studysets 1-2',
+    expInfo: { participant: '', session: '001' }
 });
 
-// Initialize experiment variables
 const experiment = {
     blocks: 2,
     imagesPerBlock: 54,
@@ -49,12 +46,23 @@ const experiment = {
     imageSets: [],
     currentBlock: 0,
     currentImage: 0,
-    responses: [],
-    participantName: ''
+    responses: []
 };
 
 window.onload = function () {
-    typo = new Typo("en_US", undefined, undefined, { dictionaryPath: "typo/dictionaries", asyncLoad: false });
+    const typo = new Typo("en_US", undefined, undefined, { dictionaryPath: "typo/dictionaries", asyncLoad: false });
+    fetchStudyData()
+        .then(imageSets => {
+            console.log('Study data fetched:', imageSets);
+            return preloadImages(imageSets);
+        })
+        .then(() => {
+            console.log('Images preloaded');
+            showInstructions();
+        })
+        .catch(error => {
+            console.error('Error during initialization:', error);
+        });
 };
 
 function fetchStudyData() {
@@ -68,6 +76,7 @@ function fetchStudyData() {
         .then(data => {
             experiment.blocks = data.blocks || 2;
             experiment.imagesPerBlock = data.imagesPerBlock || 54;
+            console.log('Fetched study data:', data);
             return data.imageSets;
         })
         .catch(error => {
@@ -350,7 +359,7 @@ function saveResponse(set) {
     console.log('Saving response');
     let details = [];
     let invalidDetails = [];
-    let typo = new Typo('en_US', undefined, undefined, { dictionaryPath: '/IRoR_Descriptions_Congruent_s1-2/typo/dictionaries' });
+    const typo = new Typo('en_US', undefined, undefined, { dictionaryPath: '/IRoR_Descriptions_Congruent_s1-2/typo/dictionaries' });
 
     for (let i = 1; i <= 4; i++) {
         let detail = document.getElementById(`detail${i}`).value.trim();
@@ -401,9 +410,23 @@ function saveResponse(set) {
     showNextImage();
 }
 
-function saveResponsesToPavlovia() {
-    psychoJS.experiment.addData('responses', JSON.stringify(experiment.responses));
-    psychoJS.experiment.save();
+function saveResponsesToFile() {
+    console.log('Saving responses to file');
+    let csvData = "participantName,image,word,detail1,detail2,detail3,detail4,condition,folder\n";
+    experiment.responses.forEach(response => {
+        csvData += `${response.participantName},${response.image},${response.word},${response.detail1},${response.detail2},${response.detail3},${response.detail4},${response.condition},${response.folder}\n`;
+    });
+
+    const filename = `${experiment.participantName}_IRoR_Descriptions_Congruent_s1-2_${getFormattedDate()}.csv`;
+    saveToFile(filename, csvData);
+}
+
+function saveToFile(filename, data) {
+    let blob = new Blob([data], { type: 'text/csv' });
+    let a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = filename;
+    a.click();
 }
 
 function showThankYouMessage() {
