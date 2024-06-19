@@ -66,7 +66,7 @@ function fetchStudyData() {
         })
         .then(data => {
             console.log('Fetched study data:', data);
-            return data.data.imageSets; // Ensure this matches your data structure
+            return data.data.componentList[0].jsonData.imageSets; // Ensure this matches your data structure
         })
         .catch(error => {
             console.error('Error fetching study data:', error);
