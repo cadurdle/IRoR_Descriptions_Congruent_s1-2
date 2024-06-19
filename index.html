@@ -9,6 +9,18 @@
     <script src="libs/jquery-3.5.1.js"></script>
     <script src="libs/lab.dev.js"></script>
     <script src="typo/typo.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js"></script>
+    <script>
+        require.config({
+            paths: {
+                'lib': 'https://pavlovia.org/lib',
+                'psychojs': 'https://pavlovia.org/lib/psychojs-2020.1.js'
+            }
+        });
+        require(['psychojs'], function(pavlovia) {
+            window.pavlovia = pavlovia;
+        });
+    </script>
     <script src="main.js" defer></script>
 </head>
 <body>
