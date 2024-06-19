@@ -1,10 +1,36 @@
-import { PsychoJS } from './libs/psychojs-2023.2.3.js';
-import * as core from './libs/psychojs-2023.2.3.js';
-import * as util from './libs/psychojs-2023.2.3.js';
-import * as visual from './libs/psychojs-2023.2.3.js';
-import * as sound from './libs/psychojs-2023.2.3.js';
-import * as data from './libs/psychojs-2023.2.3.js';
-import * as hardware from './libs/psychojs-2023.2.3.js';
+// main.js
+import { PsychoJS } from 'libs/psychojs-2023.2.3.js';
+import * as core from 'libs/core.js';
+import * as util from 'libs/util.js';
+import * as visual from 'libs/visual.js';
+import * as sound from 'libs/sound.js';
+
+// Create the PsychoJS experiment instance
+const psychoJS = new PsychoJS({
+    debug: true
+});
+
+// Open the Pavlovia session
+psychoJS.start({
+    expName: 'IRoR Image Description Task Congruent Studysets 1-2',
+    expInfo: { participant: '', session: '001' }
+});
+
+// Schedule the experiment
+psychoJS.schedule(psychoJS.gui.DlgFromDict({
+    dictionary: { participant: '', session: '001' },
+    title: 'IRoR Image Description Task Congruent Studysets 1-2'
+}));
+
+psychoJS.schedule( () => {
+    // Experiment setup goes here
+});
+
+// Start the experiment
+psychoJS.start({
+    expName: 'IRoR Image Description Task Congruent Studysets 1-2',
+    expInfo: { participant: '', session: '001' }
+});
 
 const experiment = {
     blocks: 2,
