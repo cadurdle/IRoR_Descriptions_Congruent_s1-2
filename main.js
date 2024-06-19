@@ -31,17 +31,6 @@ if (typeof PsychoJS === 'undefined') {
     });
 }
 
-const experiment = {
-    blocks: 2,
-    imagesPerBlock: 54,
-    congruentSets: 2,
-    incongruentSets: 0,
-    imageSets: [],
-    currentBlock: 0,
-    currentImage: 0,
-    responses: []
-};
-
 window.onload = function () {
     typo = new Typo("en_US", undefined, undefined, { dictionaryPath: "typo/dictionaries", asyncLoad: false });
     fetchStudyData()
@@ -59,7 +48,7 @@ window.onload = function () {
 };
 
 function fetchStudyData() {
-    return fetch('/study.json')
+    return fetch('study.json') // Ensure the path is correct relative to your server setup
         .then(response => {
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
@@ -77,6 +66,18 @@ function fetchStudyData() {
             return [];
         });
 }
+
+const experiment = {
+    blocks: 2,
+    imagesPerBlock: 54,
+    congruentSets: 2,
+    incongruentSets: 0,
+    imageSets: [],
+    currentBlock: 0,
+    currentImage: 0,
+    responses: []
+};
+
 
 function preloadImages(imageSets) {
     if (!Array.isArray(imageSets)) {
